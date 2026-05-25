@@ -738,6 +738,78 @@
     .footer-brand { grid-column: 1 / -1; }
     footer { padding: 48px 24px 24px; }
   }
+
+  /* ── MOBILE NAV ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--forest);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--salt);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: Arial, 'Helvetica Neue', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 8vw, 42px);
+    letter-spacing: -0.03em;
+    color: var(--forest);
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0,26,19,0.08);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--emerald); }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu-cta {
+    margin-top: 40px;
+  }
+  .mobile-menu-cta a {
+    background: var(--forest) !important;
+    color: var(--salt) !important;
+    font-family: var(--font-sub) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    padding: 14px 32px !important;
+    border-radius: 4px !important;
+    border-bottom: none !important;
+    width: auto !important;
+  }
+
+  @media (max-width: 960px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+    .nav-social { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -758,7 +830,21 @@
     </div>
     <a href="contact.html" class="btn-book">Book a Demo</a>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="active">Home</a>
+  <a href="platform.html">Platform</a>
+  <a href="about-us.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <div class="mobile-menu-cta">
+    <a href="contact.html">Book a Demo</a>
+  </div>
+</div>
 
 <!-- ═══ HERO ═══ -->
 <div class="hero-wrap">
@@ -986,6 +1072,15 @@
 
 <script>
   const nav = document.getElementById('nav');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
   }, { passive: true });
